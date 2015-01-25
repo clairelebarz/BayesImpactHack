@@ -1,0 +1,126 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700,900,400italic' rel='stylesheet' type='text/css'>
+    <!--<link rel="icon" href="favicon.ico">-->
+
+    <title>HPPD Domestic Violence Profiler</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{{ url_for('static', filename='./css/bootstrap.min.css') }}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="{{ url_for('static', filename='./css/navbar.css') }}" rel="stylesheet">
+    <link href="https://cdn.datatables.net/plug-ins/9dcbecd42ad/integration/bootstrap/3/dataTables.bootstrap.css" rel='stylesheet'>
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]
+    <script src="../../assets/js/ie-emulation-modes-warning.js"></script>-->
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug
+    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>-->
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="container">
+
+      <!-- Static navbar -->
+      <div class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+          <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li><a href="{{ url_for('show_index') }}">Home</a></li>
+              <li><a href="{{ url_for('show_map') }}">Map</a></li>
+              <li class="active"><a href="{{ url_for('calls') }}">Call Response</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="http://www.high-point.net/police/">HPPD</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div><!--/.container-fluid -->
+      </div>
+
+      <!-- Main component for a primary marketing message or call to action -->
+      <div class="row text-center">
+          <img src="{{ url_for('static', filename='./images/logo.png') }}">
+      </div>
+        <div class="row text-center">
+                <p class="logoname">Call Response Risk Rater</p>
+
+                <form action="{{ url_for('add_entry') }}" method="post" class="contenttext">
+                    Address:<br>
+                    <input type="text" name="Address">
+                    <br><br>
+<!--
+                    Month:
+                    <select name="Month">
+                        <option value="January">JAN</option>
+                        <option value="February">FEB</option>
+                        <option value="March">MAR</option>
+                        <option value="April">APR</option>
+                        <option value="May">MAY</option>
+                        <option value="June">JUN</option>
+                        <option value="July">JUL</option>
+                        <option value="August">AUG</option>
+                        <option value="September">SEP</option>
+                        <option value="October">OCT</option>
+                        <option value="November">NOV</option>
+                        <option value="December">DEC</option>
+                    </select>
+                    <br><br>
+                    Day:
+                    <select name="Day">
+                        <option value="Monday">MON</option>
+                        <option value="Tuesday">TUE</option>
+                        <option value="Wednesday">WED</option>
+                        <option value="Thursday">THUR</option>
+                        <option value="Friday">FRI</option>
+                        <option value="Saturday">SAT</option>
+                        <option value="Sunday">SUN</option>
+                    </select>
+-->
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <input class="bigbutton" type='submit' name='button' value='Submit'> &gt;&gt;</a>
+                    </form>
+
+
+            </div>
+      <div class="jumbotron">
+
+      </div>
+
+        <div class="col-xs-12 footer">
+            <!--<p><a class="footerlink" href="aboutus.html">About Us</a>&emsp;
+            <a class="footerlink" href="projects.html">Projects</a>&emsp;
+            <a class="footerlink" href="contact.html">Contact</a></p>-->
+            <p class="betawarning">BETA</p>
+            <p class="footertext">Bayes Impact Hackathon<br>&copy; 2014</p>
+        </div>
+
+    </div> <!-- /container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='./js/bootstrap.min.js') }}"></script>
+    <script src="https://cdn.datatables.net/plug-ins/9dcbecd42ad/integration/bootstrap/3/dataTables.bootstrap.js"></script>
+  </body>
+</html>

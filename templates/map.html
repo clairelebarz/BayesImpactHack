@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, minimal-ui"><meta charset="utf-8">
+<meta charset="utf-8">
+    <title>Directions service</title>
+    <link href="./../static/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+      html, body, #map-canvas {
+        height: 100%;
+        margin: 0px;
+        padding: 0px
+      }
+      #panel {
+        position: absolute;
+        top: 5px;
+        left: 50%;
+        margin-left: -180px;
+        z-index: 5;
+        background-color: #fff;
+        padding: 5px;
+        border: 1px solid #999;
+      }
+    </style>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+    <script src="./../static/js/data.js"></script>
+
+    <script>
+		
+	function MyOverlay( options, locations )
+	{
+	    this.setValues( options );
+	    this.locations = locations;
+	    this.markerLayer = $('<div />').addClass('overlay');
+	};
+
+	// MyOverlay is derived from google.maps.OverlayView
+	MyOverlay.prototype = new google.maps.OverlayView;
+
+	MyOverlay.prototype.onAdd = function()
+	{
+	    var $pane = $(this.getPanes().overlayImage); // Pane 4
+        $pane.append( this.markerLayer );
+	};
+
+	MyOverlay.prototype.onRemove = function()
+	{
+		this.markerLayer.remove();
+	};
+
+	var southWest = new google.maps.LatLng(40.744656,-74.005966); // Los Angeles, CA
+	var northEast = new google.maps.LatLng(34.052234,-118.243685); // New York, NY
+	var lngSpan = northEast.lng() - southWest.lng();
+	var latSpan = northEast.lat() - southWest.lat();
+
+	MyOverlay.prototype.draw = function()
+	{
+	    var projection = this.getProjection();
+	    var zoom = this.getMap().getZoom();
+	    var fragment = document.createDocumentFragment();
+	    
+	    this.markerLayer.empty(); // Empty any previous rendered markers
+	    console.log(this.locations.size);
+
+		for(var i = 0; i < this.locations.size; i++){
+			// Determine a random location from the bounds set previously
+			var lat = locations[i][1];
+			var lng = locations[i][2];
+			var position = new google.maps.LatLng(lat, lng)
+			console.log(position);
+
+			var randomLocation = projection.fromLatLngToDivPixel( position );
+				var $point = $('<div '
+									+'class="map-point" '
+									+'id="p'+i+'"'
+									+'title="'+i+'" '
+									+'style="'
+										+'width:8px; '
+										+'height:8px; '
+										+'left:'+randomLocation.x+'px; '
+										+'top:'+randomLocation.y+'px; '
+										+'position:absolute; '
+										+'cursor:pointer; '
+								+'">'
+									+'<img '
+										+'src="fish-mini-20.png" '
+										+'style="position: absolute; top: -6px; left: -6px" '
+									+'/>'
+								+'</div>');
+				
+				// For zoom 8 and closer show a title above the marker icon
+				if( zoom >= 8 ){
+					$point.append('<span '
+									+'style="'
+										+'position:absolute; '
+										+'top:-22px; '
+										+'left:-37px; '
+										+'width:75px; '
+										+'background-color:#fff; '
+										+'border:solid 1px #000; '
+										+'font-family: Arial, Helvetica, sans-serif; '
+										+'font-size:10px; '
+										+'text-align:center; '
+									+'">'
+										+'Custom ID '+i
+									+'</span>');
+				}
+				
+				// Append the HTML to the fragment in memory
+				fragment.appendChild( $point.get(0) );
+		}
+		
+		// Now append the entire fragment from memory onto the DOM
+		this.markerLayer.append(fragment);
+	};
+	
+  var directionsDisplay;
+  var directionsService = new google.maps.DirectionsService();
+  var map;
+
+  function initialize() {
+    var mapOptions = {      
+    	center: new google.maps.LatLng(35.9926001,-80.0248172),     
+    	zoom: 13
+    };
+
+    var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+	var OverlayMap = new MyOverlay( { map: map }, locations );
+
+    var infowindow = new google.maps.InfoWindow();
+
+    var marker, i;
+    var cityCircle;
+
+    for (i = 0; i < 10; i++) {  
+    	var lat = locations[i][1];
+    	var lng = locations[i][2];
+    	var position = new google.maps.LatLng(lat, lng)
+
+    var populationOptions = {
+      strokeColor: '#FF0000',
+      strokeOpacity: 0.8,
+      strokeWeight: 2,
+      fillColor: '#FF0000',
+      fillOpacity: 0.35,
+      map: map,
+      center: position,
+      radius: 25
+    };
+
+    // Add the circle for this city to the map.
+    cityCircle = new google.maps.Circle(populationOptions);
+
+      google.maps.event.addListener(cityCircle, 'click', (function(cityCircle, i) {
+        return function() {
+          infowindow.setContent(locations[i][0]);
+          infowindow.setPosition(cityCircle.getCenter());                    
+          infowindow.open(map);
+        }
+
+      })(cityCircle, i));
+   
+
+    google.maps.event.addListener(map, 'click', function() {
+    	infowindow.close(map,cityCircle);})
+	}}
+
+   google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
+
+  </head>
+<body>
+      <!-- Static navbar
+      <div class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+          <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li><a href="{{ url_for('show_index') }}">Home</a></li>
+              <li class="active"><a href="{{ url_for('show_map') }}">Map</a></li>
+              <li><a href="{{ url_for('calls') }}">Call Response</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="http://www.high-point.net/police/">HPPD</a></li>
+            </ul>
+          </div>
+        </div><
+      </div>
+      -->
+
+    <div id="map-canvas"/>
+
+    <div class="container-fluid">
+    	<div class="row text-center" >
+    		<div class="col-md-12">
+            </div>
+        </div>
+    </div>
+
+  </body>
+</html>

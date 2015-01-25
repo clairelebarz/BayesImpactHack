@@ -27,3 +27,7 @@ https://docs.google.com/document/d/1_lMCZ0mGpd-Stx9BwfVnAsNW1J5GnBv_Vj8XHNHu2LY/
 
 #### Impact
 Statistically speaking, 1 in 4 women will experience domestic violence during her lifetime. Women experience more than 4 million physical assaults and rapes because of their partners, and men are victims of nearly 3 million physical assaults. Help the High Points Police Department and law enforcement everywhere to leverage data science to prevent domestic violence.
+
+
+
+![alt text](http://media2.giphy.com/media/hGjhjaBBc7zyg/200.gif "DJ Cats")
